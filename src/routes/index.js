@@ -2,8 +2,9 @@ const {Router} = require('express')
 const router = Router();
 const admin = require('firebase-admin');
 
+var serviceAccount = require("../../money-share00-firebase-adminsdk-qcs9h-95ba404677.json");
 admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
+    credential: admin.credential.cert(serviceAccount),
     databaseURL: 'https://money-share00-default-rtdb.firebaseio.com/'
 })
 
@@ -19,14 +20,13 @@ router.get('/api/users/', (req, res) => {
             res.json({"message":"successfully fetch data", "result": true, "data": snapshot.val()});        
         }
     })
-    //res.json({"message":"successfully fetch data", "result": true});   
 });
 
-router.post('/api/users/add', (req, res) => {
+router.post('/api/users/add/', (req, res) => {
     const user = {
-        firstName: req.bosy.firstName,
+        firstName: req.body.firstName,
         email: req.body.email
     }
-    db.ref('users').push(user);
+    db.ref('users').push({firstName:'Hugo', lastName: 'faselo'});
 });
 module.exports = router;
