@@ -8,6 +8,9 @@ admin.initializeApp({
 })
 
 const db = admin.database();
+router.get('/', (req, res) => {
+    res.json('Ok');
+});
 router.get('/api/users/', (req, res) => {
     db.ref('users').once("value", function(snapshot) {
         if (snapshot.val() == null) {    
