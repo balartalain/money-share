@@ -33,10 +33,7 @@ router.post('/api/:userId/:year/:month/:day/add-expense/', (req, res) => {
         comment: req.body.comment,
         updated: req.body.created
     }
-    const refDay = db.ref(`${req.params.userId}/
-                             ${req.params.year}/
-                             ${req.params.month}/
-                             ${req.params.day}`);
+    const refDay = db.ref(`${req.params.userId}/${req.params.year}/${req.params.month}/${req.params.day}`);
     refDay.set(expense).then(()=>{
         res.json('success');
     }).catch((error) => {
