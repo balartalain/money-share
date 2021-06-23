@@ -2,7 +2,7 @@ const {Router} = require('express')
 const router = Router();
 const admin = require('firebase-admin');
 
-var serviceAccount = require("../../money-share00-firebase-adminsdk-qcs9h-95ba404677.json");
+var serviceAccount = require("../../money-share-59f87-firebase-adminsdk-py96k-d961d5dbcc.json");
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: 'https://money-share-59f87-default-rtdb.firebaseio.com/'
