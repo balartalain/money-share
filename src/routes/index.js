@@ -33,7 +33,7 @@ router.post('/api/:userId/add-expense/', (req, res) => {
         comment: req.body.comment,
         updated: req.body.created
     }
-    const refDay = db.child(`${req.params.userId}/
+    const refDay = db.ref().child(`${req.params.userId}/
                              ${req.params.year}/
                              ${req.params.month}/
                              ${req.params.day}`);
