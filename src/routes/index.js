@@ -15,7 +15,8 @@ router.get('/', (req, res) => {
 
 // Get user data
 router.get('/api/:userId/get-data/', (req, res) => {
-    db.ref('users/'+req.params.id).once("value", function(snapshot) {
+    console.log(req.params)
+    db.ref('users/'+req.params.userId).once("value", function(snapshot) {
         if (snapshot.val() == null) {    
             res.json({});        
         } else {        
