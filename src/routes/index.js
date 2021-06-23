@@ -26,7 +26,7 @@ router.get('/api/:userId/get-data/', (req, res) => {
 });
 
 // Add new expense
-router.post('/api/:userId/add-expense/', (req, res) => {
+router.post('/api/:userId/:year/:month/:day/add-expense/', (req, res) => {
     const expense = {
         amount: req.body.amount,
         concept: req.body.concept,
