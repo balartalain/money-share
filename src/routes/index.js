@@ -36,7 +36,7 @@ router.post('/api/:userId/add-expense/', (req, res) => {
     }
     const refDay = db.ref(`users/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.set(expense).then(()=>{
-        res.json('success');
+        res.json({data: expense});
     }).catch((error) => {
         res.json(error);
     })
