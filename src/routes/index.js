@@ -19,30 +19,29 @@ router.get('/api/:userId/get-data/', (req, res) => {
         if (snapshot.val() == null) {    
             res.json({});        
         } else {        
-            res.json({"data": snapshot.val()});        
+            res.json(snapshot.val());        
         }
     })
 });
 
-// Add new expense
+// Add new / update expense
 router.put('/api/:userId/add-expense/', (req, res) => {
     const expense = {
         amount: req.body.amount,
         currency: req.body.currency,
         concept: req.body.concept,
         comment: req.body.comment || "",
-        updated: req.body.created
-    }
-    console.log(req.body)    
+        updated: req.body.updated
+    }  
     const refDay = db.ref(`users/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.set(expense).then(()=>{
-        res.json({data: expense});
+        res.json(expense);
     }).catch((error) => {
         res.json(error);
     })
 });
 // Update Expense
-router.post('/api/:userId/update-expense/', (req, res) => {
+router.put('/api/:userId/update-expense/', (req, res) => {
     const expense = {
         amount: req.body.amount,
         currency: req.body.currency,
@@ -52,14 +51,14 @@ router.post('/api/:userId/update-expense/', (req, res) => {
     }
     const refDay = db.ref(`users/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.set(expense).then(()=>{
-        res.json('success');
+        res.json(expense);
     }).catch((error) => {
         res.json(error);
     })
 });
 
 // Delete expense
-router.post('/api/:userId/delete-expense/', (req, res) => {
+router.put('/api/:userId/delete-expense/', (req, res) => {
 
     const refDay = db.ref(`users/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.update({'delete': true}).then(()=>{
