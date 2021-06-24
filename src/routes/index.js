@@ -15,7 +15,6 @@ router.get('/', (req, res) => {
 
 // Get user data
 router.get('/api/:userId/get-data/', (req, res) => {
-    console.log(req.params)
     db.ref('users/'+req.params.userId).once("value", function(snapshot) {
         if (snapshot.val() == null) {    
             res.json({});        
@@ -26,7 +25,7 @@ router.get('/api/:userId/get-data/', (req, res) => {
 });
 
 // Add new expense
-router.post('/api/:userId/add-expense/', (req, res) => {
+router.put('/api/:userId/add-expense/', (req, res) => {
     const expense = {
         amount: req.body.amount,
         currency: req.body.currency,
@@ -34,6 +33,7 @@ router.post('/api/:userId/add-expense/', (req, res) => {
         comment: req.body.comment || "",
         updated: req.body.created
     }
+    console.log(req.body)    
     const refDay = db.ref(`users/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.set(expense).then(()=>{
         res.json({data: expense});
