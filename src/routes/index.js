@@ -26,36 +26,43 @@ router.get('/api/:userId/get-data/', (req, res) => {
 });
 
 // Add new expense
-router.post('/api/:userId/:year/:month/:day/add-expense/', (req, res) => {
+router.post('/api/:userId/add-expense/', (req, res) => {
     const expense = {
         amount: req.body.amount,
+        currency: req.body.currency,
         concept: req.body.concept,
         comment: req.body.comment || "",
         updated: req.body.created
     }
-    const refDay = db.ref(`${req.params.userId}/${req.params.year}/${req.params.month}/${req.params.day}`);
+    const refDay = db.ref(`users/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.set(expense).then(()=>{
         res.json('success');
     }).catch((error) => {
         res.json(error);
     })
 });
-// Update/Delete expense
+// Update Expense
 router.post('/api/:userId/update-expense/', (req, res) => {
     const expense = {
         amount: req.body.amount,
+        currency: req.body.currency,
         concept: req.body.concept,
-        comment: req.body.comment,
-        updated: req.body.created
+        comment: req.body.comment || {},
+        updated: req.body.updated
     }
-    if (req.body.delete){
-        expense.delete = true;
-    }
-    const refDay = db.child(`${req.params.userId}/
-                             ${req.params.year}/
-                             ${req.params.month}/
-                             ${req.params.day}`);
+    const refDay = db.ref(`users/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.set(expense).then(()=>{
+        res.json('success');
+    }).catch((error) => {
+        res.json(error);
+    })
+});
+
+// Delete expense
+router.post('/api/:userId/delete-expense/', (req, res) => {
+
+    const refDay = db.ref(`users/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
+    refDay.update({'delete': true}).then(()=>{
         res.json('success');
     }).catch((error) => {
         res.json(error);
