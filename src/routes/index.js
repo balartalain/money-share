@@ -61,7 +61,7 @@ router.put('/api/:userId/update-expense/', (req, res) => {
 router.put('/api/:userId/delete-expense/', (req, res) => {
 
     const refDay = db.ref(`users/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
-    refDay.update({'delete': true}).then(()=>{
+    refDay.update({'delete': 'true'}).then(()=>{
         res.json('success');
     }).catch((error) => {
         res.json(error);
