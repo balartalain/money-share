@@ -18,7 +18,7 @@ router.put('/api/register-user/', (req, res) => {
         name: req.body.name,
         email: req.body.email
     }  
-    const refDay = db.ref(`users/${req.body.id}}`);
+    const refDay = db.ref(`users/${req.body.id}`);
     refDay.set(user).then(()=>{
         res.json(user);
     }).catch((error) => {
