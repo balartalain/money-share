@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 
 // Get user data
 router.get('/api/:userId/get-data/', (req, res) => {
-    db.ref('users/'+req.params.userId).once("value", function(snapshot) {
+    db.ref('data/'+req.params.userId).once("value", function(snapshot) {
         if (snapshot.val() == null) {    
             res.json({});        
         } else {        
@@ -33,7 +33,7 @@ router.put('/api/:userId/add-expense/', (req, res) => {
         comment: req.body.comment || "",
         updated: req.body.updated
     }  
-    const refDay = db.ref(`users/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
+    const refDay = db.ref(`data/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.set(expense).then(()=>{
         res.json(expense);
     }).catch((error) => {
@@ -49,7 +49,7 @@ router.put('/api/:userId/update-expense/', (req, res) => {
         comment: req.body.comment || {},
         updated: req.body.updated
     }
-    const refDay = db.ref(`users/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
+    const refDay = db.ref(`data/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.set(expense).then(()=>{
         res.json(expense);
     }).catch((error) => {
@@ -60,7 +60,7 @@ router.put('/api/:userId/update-expense/', (req, res) => {
 // Delete expense
 router.put('/api/:userId/delete-expense/', (req, res) => {
 
-    const refDay = db.ref(`users/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
+    const refDay = db.ref(`data/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.update({'deleted': 'true'}).then(()=>{
         res.json('success');
     }).catch((error) => {
