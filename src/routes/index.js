@@ -12,6 +12,19 @@ const db = admin.database();
 router.get('/', (req, res) => {
     res.json('Ok');
 });
+// Register user
+router.put('/api/register-user/', (req, res) => {
+    const user = {
+        name: req.body.name,
+        email: req.body.email
+    }  
+    const refDay = db.ref(`users/${req.body.id}}`);
+    refDay.set(user).then(()=>{
+        res.json(user);
+    }).catch((error) => {
+        res.json(error);
+    })
+});
 
 // Get user data
 router.get('/api/:userId/get-data/', (req, res) => {
