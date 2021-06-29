@@ -25,7 +25,15 @@ router.put('/api/:userId/register-user/', (req, res) => {
         res.json(error);
     })
 });
-
+router.get('/api/get-users/', (req, res) => {
+    db.ref('users').once("value", function(snapshot) {
+        if (snapshot.val() == null) {    
+            res.json({});        
+        } else {        
+            res.json(snapshot.val());        
+        }
+    })
+})
 // Get user data
 router.get('/api/:userId/get-data/', (req, res) => {
     db.ref('data/'+req.params.userId).once("value", function(snapshot) {
