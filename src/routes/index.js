@@ -89,6 +89,17 @@ router.put('/api/:userId/delete-expense/', (req, res) => {
     })
 });
 
+// Update Expense
+router.put('/api/:userId/set-supervisor/', (req, res) => {
+
+    const refDay = db.ref(`users/${req.params.userId}`);
+    refDay.update({'supervisor': req.body.isSupervisor}).then(()=>{
+        res.json('success');
+    }).catch((error) => {
+        res.json(error);
+    })
+});
+
 // router.post('/api/users/add/', (req, res) => {
 //     const user = {
 //         firstName: req.body.firstName,
