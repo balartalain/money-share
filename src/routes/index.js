@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 router.put('/api/:userId/register-user/', (req, res) => {
     const user = {
         name: req.body.name,
-        email: req.body.email
+        email: req.body.email || ''
     }  
     const refDay = db.ref(`users/${req.params.userId}`);
     refDay.set(user).then(()=>{
@@ -89,7 +89,7 @@ router.put('/api/:userId/delete-expense/', (req, res) => {
     })
 });
 
-// Update Expense
+// Set Supervisor
 router.put('/api/:userId/set-supervisor/', (req, res) => {
 
     const refDay = db.ref(`users/${req.params.userId}`);
