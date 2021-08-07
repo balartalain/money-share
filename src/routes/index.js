@@ -9,8 +9,17 @@ admin.initializeApp({
 })
 
 const db = admin.database();
+router.use(function (req, res, next) {
+    console.log('ENV: ', req.query.env);
+    req.query.db = req.query.env === 'PRODUCTION'?"":"test"; 
+    next();
+  });
+
 router.get('/', (req, res) => {
-    res.json('Ok');
+    res.json({
+        env: req.query.env,
+        db: req.query.db
+    });
 });
 // Register user
 router.put('/api/:userId/register-user/', (req, res) => {
