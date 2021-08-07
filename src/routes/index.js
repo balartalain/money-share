@@ -10,8 +10,7 @@ admin.initializeApp({
 
 const db = admin.database();
 router.use(function (req, res, next) {
-    console.log('ENV: ', req.query.env);
-    req.query.db = req.query.env === 'PRODUCTION'?"":"test"; 
+    req.query.db = req.query.env === 'PRODUCTION'?"":"test/"; 
     next();
   });
 
@@ -27,7 +26,8 @@ router.put('/api/:userId/register-user/', (req, res) => {
         name: req.body.name,
         email: req.body.email || ''
     }  
-    const refDay = db.ref(`users/${req.params.userId}`);
+    const firebaseDB = req.query.db;
+    const refDay = db.ref(`${firebaseDB}users/${req.params.userId}`);
     refDay.set(user).then(()=>{
         res.json(user);
     }).catch((error) => {
@@ -35,7 +35,8 @@ router.put('/api/:userId/register-user/', (req, res) => {
     })
 });
 router.get('/api/get-users/', (req, res) => {
-    db.ref('users').once("value", function(snapshot) {
+    const firebaseDB = req.query.db;
+    db.ref(`${firebaseDB}users`).once("value", function(snapshot) {
         if (snapshot.val() == null) {    
             res.json({});        
         } else {        
@@ -45,7 +46,8 @@ router.get('/api/get-users/', (req, res) => {
 })
 // Get user data
 router.get('/api/:userId/get-data/', (req, res) => {
-    db.ref('data/'+req.params.userId).once("value", function(snapshot) {
+    const firebaseDB = req.query.db;
+    db.ref(`${firebaseDB}data/${req.params.userId}`).once("value", function(snapshot) {
         if (snapshot.val() == null) {    
             res.json({});        
         } else {        
@@ -63,7 +65,8 @@ router.put('/api/:userId/add-expense/', (req, res) => {
         comment: req.body.comment || "",
         updated: req.body.updated
     }  
-    const refDay = db.ref(`data/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
+    const firebaseDB = req.query.db;
+    const refDay = db.ref(`${firebaseDB}data/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.set(expense).then(()=>{
         res.json(expense);
     }).catch((error) => {
@@ -79,7 +82,8 @@ router.put('/api/:userId/update-expense/', (req, res) => {
         comment: req.body.comment || {},
         updated: req.body.updated
     }
-    const refDay = db.ref(`data/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
+    const firebaseDB = req.query.db;
+    const refDay = db.ref(`${firebaseDB}data/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.set(expense).then(()=>{
         res.json(expense);
     }).catch((error) => {
@@ -90,7 +94,8 @@ router.put('/api/:userId/update-expense/', (req, res) => {
 // Delete expense
 router.put('/api/:userId/delete-expense/', (req, res) => {
 
-    const refDay = db.ref(`data/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
+    const firebaseDB = req.query.db;
+    const refDay = db.ref(`${firebaseDB}data/${req.params.userId}/${req.body.year}/${req.body.month}/${req.body.day}/${req.body.created}`);
     refDay.update({'deleted': 'true'}).then(()=>{
         res.json('success');
     }).catch((error) => {
@@ -100,8 +105,8 @@ router.put('/api/:userId/delete-expense/', (req, res) => {
 
 // Set Supervisor
 router.put('/api/:userId/set-supervisor/', (req, res) => {
-
-    const refDay = db.ref(`users/${req.params.userId}`);
+    const firebaseDB = req.query.db;
+    const refDay = db.ref(`${firebaseDB}users/${req.params.userId}`);
     refDay.update({'supervisor': req.body.isSupervisor}).then(()=>{
         res.json('success');
     }).catch((error) => {
