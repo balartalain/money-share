@@ -10,7 +10,7 @@ admin.initializeApp({
 
 const db = admin.database();
 router.use(function (req, res, next) {
-    req.query.db = req.query.env === 'PRODUCTION'?"":"test/"; 
+    req.query.db = (!req.query.env || req.query.env === 'PRODUCTION')?"":"test/"; 
     next();
   });
 
